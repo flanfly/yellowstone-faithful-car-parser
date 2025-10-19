@@ -26,7 +26,6 @@ mod rewards;
 mod subset;
 mod transaction;
 
-const MAX_ALLOWED_HEADER_SIZE: usize = 1024;
 const MAX_ALLOWED_SECTION_SIZE: usize = 32 << 20; // 32MiB
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -213,10 +212,6 @@ impl<R: AsyncRead + Unpin> NodeReader<R> {
     pub async fn read_header(&mut self) -> Result<&[u8], NodeError> {
         if self.header.is_empty() {
             let header_length = varint::read(&mut self.reader).await? as usize;
-            if header_length > MAX_ALLOWED_HEADER_SIZE {
-                return Err(NodeError::HeaderTooLong(header_length));
-            }
-
             self.header = util::read_exact(&mut self.reader, header_length).await?;
         }
 
