@@ -338,8 +338,6 @@ pub enum NodeError {
     Io(#[from] io::Error),
     #[error("invalid varint")]
     InvalidVarInt,
-    #[error("header size is too long: {0} (max {max})", max = MAX_ALLOWED_HEADER_SIZE)]
-    HeaderTooLong(usize),
     #[error("section size is too long: {0} (max {max})", max = MAX_ALLOWED_SECTION_SIZE)]
     SectionTooLong(usize),
     // deserialize
